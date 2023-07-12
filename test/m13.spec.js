@@ -11,30 +11,50 @@ describe('M13 E Commerce Backend', () => {
   describe('Product routes', () => {
     describe('GET /api/products', () => {
       it('gets all products', async () => {
-        const { data } = await api.m13.products.getAll();
-
         // Sequelize's findAll method returns an array
         // usually this is passed directly to res.json, but some students wrap the responst in an object
+        const { data } = await api.m13.products.getAll();
         expect(Array.isArray(data), "get all products didn't return an array").to.be.true;
 
         if (data.length > 0) {
           const [product] = data;
-
           expect(product, 'model missing keys').to.include.all.keys(
             'id',
             'product_name',
             'price',
             'stock',
-            'category',
-            'tags',
           );
+        }
+      });
+
+      it('includes category data', async () => {
+        const { data } = await api.m13.products.getAll();
+        expect(Array.isArray(data), "get all products didn't return an array").to.be.true;
+
+        if (data.length > 0) {
+          const [product] = data;
+          expect(product, "get all products doesn't include categories").to.include.all.keys(
+            'category',
+          );
+        }
+      });
+
+      it('includes tag data', async () => {
+        const { data } = await api.m13.products.getAll();
+        expect(Array.isArray(data), "get all products didn't return an array").to.be.true;
+
+        if (data.length > 0) {
+          const [product] = data;
+          expect(product, "get all products doesn't include tags").to.include.all.keys('tags');
         }
       });
     });
 
     // describe('GET /api/products/:id', () => {
     //   it('gets one product by id', () => {});
+
     //   it('includes category data', () => {});
+
     //   it('includes tag data', () => {});
     // });
 
