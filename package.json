@@ -13,7 +13,8 @@
   "dependencies": {
     "axios": "^1.4.0",
     "chai": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "eslint": "^8.44.0",
