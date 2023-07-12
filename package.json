@@ -1,0 +1,24 @@
+{
+  "name": "api-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "author": "Robert Adams <adamsiii.robert@gmail.com>",
+  "repository": "git@github.com:r0b-adams/api-tests.git",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chai": "*",
+    "mocha": "*"
+  },
+  "devDependencies": {
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.0"
+  }
+}
