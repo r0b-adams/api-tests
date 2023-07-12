@@ -58,13 +58,21 @@ describe('M13 E Commerce Backend', () => {
     //   it('includes tag data', () => {});
     // });
 
-    // defined in starter code
-    // describe('POST  /api/products', () => {
-    //   it('creates a product', () => {
-    //     // if created with product tags, returns array of ProductTag models
-    //     // else just returns the product model
-    //   });
-    // });
+    // ***defined in starter code***
+    describe('POST /api/products', () => {
+      // if created with product tags, returns array of ProductTag models
+      // else just returns the product model
+      it('creates a product', async () => {
+        const product = {
+          product_name: 'Red balloon',
+          price: 200.0,
+          stock: 99,
+          // tagIds: [1, 2, 3, 4],
+        };
+        const { data } = await api.m13.products.post(product);
+        expect(data).to.include(product);
+      });
+    });
 
     // defined in starter code
     // describe('PUT  /api/products/:id', () => {
