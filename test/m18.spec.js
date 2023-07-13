@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import { api } from '../utils/api.js';
-import { newUser, newThought, thoughtUpdate } from '../utils/helpers.js';
+import { newUser, newThought, thoughtUpdate, newReaction } from '../utils/helpers.js';
 
 describe('M18 Social Network API', function () {
   // describe('User routes', function () {
@@ -233,13 +233,45 @@ describe('M18 Social Network API', function () {
       });
     });
 
-    // describe('POST /api/thoughts/:thoughtId/reactions', async function () {
-    //   it('adds a reaction', function () {});
-    // });
+    describe('POST /api/thoughts/:thoughtId/reactions', function () {
+      it('adds a reaction', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
+        const rxn = newReaction();
 
-    // describe('DELETE /api/thoughts/:thoughtId/reactions/:reactionId', async function () {
-    //   it('removes a reaction', function () {});
-    // });
+        await api.m18.thoughts.addreaction(thought._id, rxn);
+        const { data: result } = await api.m18.thoughts.getOne(thought._id);
+
+        expect(result.reactions.length).to.equal(1);
+
+        const [reaction] = result.reactions;
+
+        expect(reaction, 'missing key(s)').to.include.all.keys(
+          'reactionId',
+          'reactionBody',
+          'username',
+          'createdAt',
+        );
+        expect(reaction.reactionBody).to.equal(rxn.reactionBody);
+        expect(reaction.username).to.equal(rxn.username);
+      });
+    });
+
+    describe('DELETE /api/thoughts/:thoughtId/reactions/:reactionId', async function () {
+      it('removes a reaction', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
+
+        await api.m18.thoughts.addreaction(thought._id, newReaction());
+        const { data: test } = await api.m18.thoughts.getOne(thought._id);
+        expect(test.reactions.length).to.equal(1);
+
+        const [reaction] = test.reactions;
+        await api.m18.thoughts.removeReaction(thought._id, reaction.reactionId);
+        const { data: result } = await api.m18.thoughts.getOne(thought._id);
+        expect(result.reactions.length).to.equal(0);
+      });
+    });
   });
 
   /**
