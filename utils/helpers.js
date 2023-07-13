@@ -1,5 +1,24 @@
 import { v4 as uuidv4 } from 'uuid';
+import { LoremIpsum } from 'lorem-ipsum';
 
+export const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 4,
+    min: 2,
+  },
+  wordsPerSentence: {
+    max: 5,
+    min: 1,
+  },
+});
+
+/**
+ *
+ * @returns first 7 lsds from Date.now()
+ *
+ * helper to avoid id collisions with seed data and old test data
+ * using full date number is out of bounds for mysql interger type
+ */
 const id = () => {
   let date = Date.now();
   let result = 0;
@@ -31,5 +50,28 @@ export const newTag = () => {
   return {
     id: id(),
     tag_name: uuidv4(),
+  };
+};
+
+export const newUser = () => {
+  const username = uuidv4();
+  return {
+    username,
+    email: `user-${username}@testmail.com`,
+  };
+};
+
+export const newThought = (userId, username) => {
+  return {
+    thoughtText: lorem.generateParagraphs(1),
+    username,
+    userId,
+  };
+};
+
+export const newReaction = () => {
+  return {
+    reactionBody: lorem.generateSentences(1),
+    username: uuidv4(),
   };
 };
