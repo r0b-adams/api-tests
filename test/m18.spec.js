@@ -1,79 +1,79 @@
 import { describe, it } from 'mocha';
 // import { expect } from 'chai';
 
-// describe('M18 Social Network API', () => {
-//   describe('User routes', () => {
+// describe('M18 Social Network API',  function () {
+//   describe('User routes',  function () {
 //     /**
 //      * Users
 //      */
-//     describe('GET /api/users/:userId', () => {
-//       it('gets one user by id', () => {});
+//     describe('GET /api/users/:userId',  function () {
+//       it('gets one user by id',  function () {});
 //     });
 
-//     describe('GET /api/users', () => {
-//       it('gets all users', () => {});
+//     describe('GET /api/users',  function () {
+//       it('gets all users',  function () {});
 //     });
 
-//     describe('POST /api/users', () => {
-//       it('creates a user', () => {});
+//     describe('POST /api/users',  function () {
+//       it('creates a user',  function () {});
 //     });
 
-//     describe('PUT /api/users/:userId', () => {
-//       it('updates a user by id', () => {});
+//     describe('PUT /api/users/:userId',  function () {
+//       it('updates a user by id',  function () {});
 //     });
 
-//     describe('DELETE /api/users/:userId', () => {
-//       it('deletes a user by id', () => {});
+//     describe('DELETE /api/users/:userId',  function () {
+//       it('deletes a user by id',  function () {});
 //     });
 
-//     describe('POST /api/users/:userId/friends/:friendId - ', () => {
-//       it('adds a friend', () => {});
+//     describe('POST /api/users/:userId/friends/:friendId - ',  function () {
+//       it('adds a friend',  function () {});
 //     });
 
-//     describe('DELETE /api/users/:userId/friends/:friendId', () => {
-//       it('removes a friend', () => {});
+//     describe('DELETE /api/users/:userId/friends/:friendId',  function () {
+//       it('removes a friend',  function () {});
 //     });
 //   });
 
 //   /**
 //    * Thoughts
 //    */
-//   describe('Thought routes', () => {
-//     describe('POST /api/thoughts', () => {
-//       it('creates a thought', () => {});
-//       it('adds created thought id to user thoughts array', () => {});
+//   describe('Thought routes',  function () {
+//     describe('POST /api/thoughts',  function () {
+//       it('creates a thought',  function () {});
+//       it('adds created thought id to user thoughts array',  function () {});
 //     });
 
-//     describe('GET /api/thoughts/:thoughtId', () => {
-//       it('gets one thought', () => {});
+//     describe('GET /api/thoughts/:thoughtId',  function () {
+//       it('gets one thought',  function () {});
 //     });
 
-//     describe('GET /api/thoughts', () => {
-//       it('gets all thoughts', () => {});
+//     describe('GET /api/thoughts',  function () {
+//       it('gets all thoughts',  function () {});
 //     });
 
-//     describe('PUT /api/thoughts/:thoughtId', () => {
-//       it('updates a thought', () => {});
+//     describe('PUT /api/thoughts/:thoughtId',  function () {
+//       it('updates a thought',  function () {});
 //     });
 
-//     describe('DELETE /api/thoughts/:thoughtId', () => {
-//       it('deletes a thought', () => {});
-//       it('removes delete thought id from user thoughts array', () => {});
+//     describe('DELETE /api/thoughts/:thoughtId',  function () {
+//       it('deletes a thought',  function () {});
+//       it('removes delete thought id from user thoughts array',  function () {});
 //     });
 
-//     describe('POST /api/thoughts/:thoughtId/reactions', () => {
-//       it('adds a reaction', () => {});
+//     describe('POST /api/thoughts/:thoughtId/reactions',  function () {
+//       it('adds a reaction',  function () {});
 //     });
 
-//     describe('DELETE /api/thoughts/:thoughtId/reactions/:reactionId', () => {
-//       it('removes a reaction', () => {});
+//     describe('DELETE /api/thoughts/:thoughtId/reactions/:reactionId',  function () {
+//       it('removes a reaction',  function () {});
 //     });
 //   });
 
 //   /**
 //    * BONUS
 //    */
-//   describe('BONUS', () => {
-//     it("removes a deleted user's associated thoughts", () => {});
+//   describe('BONUS',  function () {
+//     it("removes a deleted user's associated thoughts",  function () {});
 //   });
 // });
