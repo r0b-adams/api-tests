@@ -215,12 +215,33 @@ describe('M13 E Commerce Backend', function () {
       });
     });
 
-    // describe('PUT  /api/tags/:id', function () {
-    //   it('updates a tag', async function () {});
-    // });
+    describe('PUT  /api/tags/:id', function () {
+      it('updates a tag', async function () {
+        const { data: postTag } = await api.m13.tags.post(newTag());
+        const update = {
+          tag_name: `UPDATED - ${postTag.tag_name}`,
+        };
+        const { data: putTag } = await api.m13.tags.put(postTag.id, update);
 
-    // describe('DELETE /api/tags/:id', function () {
-    //   it('removes a tag', async function () {});
-    // });
+        if (Array.isArray(putTag)) {
+          expect(putTag).to.include(1);
+        }
+
+        const { data: getTag } = await api.m13.tags.getOne(postTag.id);
+        if (getTag) {
+          expect(getTag).to.be.an('object').that.includes(update);
+        }
+      });
+    });
+
+    describe('DELETE /api/tags/:id', function () {
+      it('removes a tag', async function () {
+        const { data: postTag } = await api.m13.tags.post(newTag());
+        const { data: deleteResult } = await api.m13.tags.delete(postTag.id);
+
+        // sequelize destroy query returns number of deleted rows
+        expect(deleteResult).to.equal(1);
+      });
+    });
   });
 });
