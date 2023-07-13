@@ -4,6 +4,9 @@ const PORT = 3001;
 axios.defaults.baseURL = `http://localhost:${PORT}`;
 
 export const api = {
+  /**
+   * M13 E-Commerce Backend
+   */
   m13: {
     products: {
       getAll: () => axios.get('/api/products'),
@@ -27,6 +30,10 @@ export const api = {
       delete: (id) => axios.delete(`/api/tags/${id}`),
     },
   },
+
+  /**
+   * M18 Social Network API
+   */
   m18: {
     users: {
       getAll: () => {},
