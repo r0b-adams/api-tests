@@ -32,21 +32,42 @@ describe('M18 Social Network API', function () {
       it('gets one user by id', async function () {
         const { data: user } = await api.m18.users.post(newUser());
         const { data: result } = await api.m18.users.getOne(user._id);
-        expect(result).to.be.an('object').but.not.own.include.keys('__v').that.deep.includes(user);
+
+        expect(result).to.be.an('object');
+        expect(result.username).to.equal(user.username);
+        expect(result.email).to.equal(user.email);
       });
     });
 
     describe('POST /api/users', function () {
       it('creates a user', async function () {
         const user = newUser();
-        const { data } = await api.m18.users.post(user);
-        expect(data).to.be.an('object').that.includes(user);
+        const { data: result } = await api.m18.users.post(user);
+
+        expect(result, 'missing key(s)').to.include.all.keys(
+          '_id',
+          'username',
+          'email',
+          'thoughts',
+          'friends',
+          'friendCount',
+        );
+        expect(result.username).to.equal(user.username);
+        expect(result.email).to.equal(user.email);
       });
     });
 
-    // describe('PUT /api/users/:userId', function () {
-    //   it('updates a user by id', function () {});
-    // });
+    describe('PUT /api/users/:userId', function () {
+      it('updates a user by id', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const update = newUser();
+        const { data: result } = await api.m18.users.put(user._id, update);
+
+        expect(result).to.be.an('object');
+        expect(result.username).to.equal(update.username);
+        expect(result.email).to.equal(update.email);
+      });
+    });
 
     // describe('DELETE /api/users/:userId', function () {
     //   it('deletes a user by id', function () {});
