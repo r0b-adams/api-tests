@@ -99,9 +99,23 @@ describe('M18 Social Network API', function () {
       });
     });
 
-    // describe('DELETE /api/users/:userId/friends/:friendId', function () {
-    //   it('removes a friend', function () {});
-    // });
+    describe('DELETE /api/users/:userId/friends/:friendId', function () {
+      it('removes a friend', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: friend } = await api.m18.users.post(newUser());
+        await api.m18.users.addFriend(user._id, friend._id);
+        const { data: added } = await api.m18.users.getOne(user._id);
+
+        expect(added.friends.length).to.equal(1);
+        expect(added.friendCount).to.equal(1);
+
+        await api.m18.users.removeFriend(user._id, friend._id);
+        const { data: result } = await api.m18.users.getOne(user._id);
+
+        expect(result.friends.length).to.equal(0);
+        expect(result.friendCount).to.equal(0);
+      });
+    });
   });
 
   /**
