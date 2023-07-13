@@ -20,11 +20,11 @@ export const api = {
       delete: (id) => axios.delete(`/api/categories/${id}`),
     },
     tags: {
-      getAll: () => {},
-      getOne: (id) => {},
-      post: (payload) => {},
-      put: (id) => {},
-      delete: (id) => {},
+      getAll: () => axios.get('/api/tags'),
+      getOne: (id) => axios.get(`/api/tags/${id}`),
+      post: (tag) => axios.post('/api/tags', tag),
+      put: (id, update) => axios.put(`/api/tags/${id}`, update),
+      delete: (id) => axios.delete(`/api/tags/${id}`),
     },
   },
   m18: {
