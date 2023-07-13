@@ -15,7 +15,7 @@ export const newProduct = () => {
   return {
     id: id(),
     product_name: uuidv4(),
-    price: 29.99,
+    price: Math.floor(Math.random() * 101) + 0.99,
     stock: Math.floor(Math.random() * 101),
   };
 };

@@ -9,8 +9,8 @@ export const api = {
       getAll: () => axios.get('/api/products'),
       getOne: (id) => axios.get(`/api/products/${id}`),
       post: (product) => axios.post('/api/products', product),
-      put: (id) => {},
-      delete: (id) => {},
+      put: (id, update) => axios.put(`/api/products/${id}`, update),
+      delete: (id) => axios.delete(`/api/products/${id}`),
     },
     categories: {
       getAll: () => {},

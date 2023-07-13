@@ -13,7 +13,7 @@ describe('M13 E Commerce Backend', () => {
     describe('GET /api/products', () => {
       it('gets all products', async () => {
         const { data } = await api.m13.products.getAll();
-        expect(Array.isArray(data), "get all products didn't return an array").to.be.true;
+        expect(data, "get all products didn't return an array").to.be.an('array');
 
         if (data.length > 0) {
           const [product] = data;
@@ -26,25 +26,16 @@ describe('M13 E Commerce Backend', () => {
         }
       });
 
-      it('includes category data', async () => {
+      it('includes category & tag data', async () => {
         const { data } = await api.m13.products.getAll();
-        expect(Array.isArray(data), "get all products didn't return an array").to.be.true;
+        expect(data, "get all products didn't return an array").to.be.an('array');
 
         if (data.length > 0) {
           const [product] = data;
-          expect(product, "get all products doesn't include category").to.include.all.keys(
+          expect(product, "get all products doesn't include tags").to.include.all.keys(
             'category',
+            'tags',
           );
-        }
-      });
-
-      it('includes tag data', async () => {
-        const { data } = await api.m13.products.getAll();
-        expect(Array.isArray(data), "get all products didn't return an array").to.be.true;
-
-        if (data.length > 0) {
-          const [product] = data;
-          expect(product, "get all products doesn't include tags").to.include.all.keys('tags');
         }
       });
     });
@@ -57,18 +48,11 @@ describe('M13 E Commerce Backend', () => {
         expect(getProduct).to.be.an('object').that.includes(postProduct);
       });
 
-      it('includes category data', async () => {
+      it('includes category & tag data', async () => {
         const { data: postProduct } = await api.m13.products.post(newProduct());
         const { data: getProduct } = await api.m13.products.getOne(postProduct.id);
 
-        expect(getProduct).to.include.all.keys('category');
-      });
-
-      it('includes tag data', async () => {
-        const { data: postProduct } = await api.m13.products.post(newProduct());
-        const { data: getProduct } = await api.m13.products.getOne(postProduct.id);
-
-        expect(getProduct).to.include.all.keys('tags');
+        expect(getProduct).to.include.all.keys('category', 'tags');
       });
     });
 
@@ -81,14 +65,37 @@ describe('M13 E Commerce Backend', () => {
       });
     });
 
-    // defined in starter code
-    // describe('PUT  /api/products/:id', () => {
-    //   it('updates a product', () => {});
-    // });
+    // ***defined in starter code***
+    describe('PUT  /api/products/:id', () => {
+      it('updates a product', async () => {
+        const { data: postProduct } = await api.m13.products.post(newProduct());
+        const update = {
+          product_name: `SOLD OUT - ${postProduct.product_name}`,
+          price: Math.floor(Math.random() * 101) + 0.99,
+          stock: Math.floor(Math.random() * 101),
+        };
+        const { data: putProduct } = await api.m13.products.put(postProduct.id, update);
 
-    // describe('DELETE /api/products/:id', () => {
-    //   it('removes a product', () => {});
-    // });
+        if (Array.isArray(putProduct)) {
+          expect(putProduct).to.include(1);
+        }
+
+        const { data: getProduct } = await api.m13.products.getOne(postProduct.id);
+        if (getProduct) {
+          expect(getProduct).to.be.an('object').that.includes(update);
+        }
+      });
+    });
+
+    describe('DELETE /api/products/:id', () => {
+      it('removes a product', async () => {
+        const { data: postProduct } = await api.m13.products.post(newProduct());
+        const { data: deleteResult } = await api.m13.products.delete(postProduct.id);
+
+        // sequelize destroy query returns number of deleted rows
+        expect(deleteResult).to.equal(1);
+      });
+    });
   });
 });
 
