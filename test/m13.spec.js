@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import { api } from '../utils/api.js';
-import { newCategory, newProduct } from '../utils/helpers.js';
+import { newCategory, newProduct, newTag } from '../utils/helpers.js';
 
 // this assignment starter code includes a seed file
 describe('M13 E Commerce Backend', function () {
@@ -193,13 +193,27 @@ describe('M13 E Commerce Backend', function () {
       });
     });
 
-    // describe('GET /api/tags/:id', function () {
-    //   it('gets one tag by id', async function () {});
-    // });
+    describe('GET /api/tags/:id', function () {
+      it('gets one tag by id', async function () {
+        const { data: postTag } = await api.m13.tags.post(newTag());
+        const { data: getTag } = await api.m13.tags.getOne(postTag.id);
+        expect(getTag).to.be.an('object').that.includes(postTag);
+      });
 
-    // describe('POST  /api/tags', function () {
-    //   it('creates a tag', async function () {});
-    // });
+      it('includes associated products', async function () {
+        const { data: postTag } = await api.m13.tags.post(newTag());
+        const { data: getTag } = await api.m13.tags.getOne(postTag.id);
+        expect(getTag, ' missing products key').to.include.all.keys('products');
+      });
+    });
+
+    describe('POST  /api/tags', function () {
+      it('creates a tag', async function () {
+        const tag = newTag();
+        const { data } = await api.m13.tags.post(tag);
+        expect(data).to.be.an('object').that.includes(tag);
+      });
+    });
 
     // describe('PUT  /api/tags/:id', function () {
     //   it('updates a tag', async function () {});
