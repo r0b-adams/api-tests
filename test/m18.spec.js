@@ -36,9 +36,13 @@ describe('M18 Social Network API', function () {
       });
     });
 
-    // describe('POST /api/users', function () {
-    //   it('creates a user', function () {});
-    // });
+    describe('POST /api/users', function () {
+      it('creates a user', async function () {
+        const user = newUser();
+        const { data } = await api.m18.users.post(user);
+        expect(data).to.be.an('object').that.includes(user);
+      });
+    });
 
     // describe('PUT /api/users/:userId', function () {
     //   it('updates a user by id', function () {});
