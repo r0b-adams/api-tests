@@ -187,7 +187,7 @@ describe('M18 Social Network API', function () {
     });
 
     describe('PUT /api/thoughts/:thoughtId', function () {
-      it('updates a thought', async function () {
+      it('updates a thought by id', async function () {
         const { data: user } = await api.m18.users.post(newUser());
         const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
         const update = thoughtUpdate();
@@ -198,10 +198,26 @@ describe('M18 Social Network API', function () {
       });
     });
 
-    // describe('DELETE /api/thoughts/:thoughtId', function () {
-    //   it('deletes a thought', async function () {});
-    //   it('removes delete thought id from user thoughts array', async function () {});
-    // });
+    describe('DELETE /api/thoughts/:thoughtId', function () {
+      it('deletes a thought by id', async function () {
+        const { data: before } = await api.m18.thoughts.getAll();
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
+        const { data: after } = await api.m18.thoughts.getAll();
+
+        // check thought was created
+        expect(after.length - before.length).to.equal(1);
+
+        // delete the thought
+        await api.m18.thoughts.delete(thought._id);
+        const { data: result } = await api.m18.thoughts.getAll();
+
+        // check thought was removed
+        expect(result.length).to.equal(before.length);
+      });
+
+      // it('removes deleted thought from user thoughts array', async function () {});
+    });
 
     // describe('POST /api/thoughts/:thoughtId/reactions', async function () {
     //   it('adds a reaction', function () {});
