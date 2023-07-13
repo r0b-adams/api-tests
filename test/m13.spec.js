@@ -2,16 +2,16 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import { api } from '../utils/api.js';
-import { newProduct } from '../utils/helpers.js';
+import { newCategory, newProduct } from '../utils/helpers.js';
 
 // this assignment starter code includes a seed file
-describe('M13 E Commerce Backend', () => {
+describe('M13 E Commerce Backend', function () {
   /**
    * Products
    */
-  describe('Product routes', () => {
-    describe('GET /api/products', () => {
-      it('gets all products', async () => {
+  describe('Product routes', function () {
+    describe('GET /api/products', function () {
+      it('gets all products', async function () {
         const { data } = await api.m13.products.getAll();
         expect(data, "get all products didn't return an array").to.be.an('array');
 
@@ -26,7 +26,7 @@ describe('M13 E Commerce Backend', () => {
         }
       });
 
-      it('includes category & tag data', async () => {
+      it('includes category & tag data', async function () {
         const { data } = await api.m13.products.getAll();
         expect(data, "get all products didn't return an array").to.be.an('array');
 
@@ -40,25 +40,23 @@ describe('M13 E Commerce Backend', () => {
       });
     });
 
-    describe('GET /api/products/:id', () => {
-      it('gets one product by id', async () => {
+    describe('GET /api/products/:id', function () {
+      it('gets one product by id', async function () {
         const { data: postProduct } = await api.m13.products.post(newProduct());
         const { data: getProduct } = await api.m13.products.getOne(postProduct.id);
-
         expect(getProduct).to.be.an('object').that.includes(postProduct);
       });
 
-      it('includes category & tag data', async () => {
+      it('includes category & tag data', async function () {
         const { data: postProduct } = await api.m13.products.post(newProduct());
         const { data: getProduct } = await api.m13.products.getOne(postProduct.id);
-
         expect(getProduct).to.include.all.keys('category', 'tags');
       });
     });
 
     // ***defined in starter code***
-    describe('POST /api/products', () => {
-      it('creates a product', async () => {
+    describe('POST /api/products', function () {
+      it('creates a product', async function () {
         const product = newProduct();
         const { data } = await api.m13.products.post(product);
         expect(data).to.be.an('object').that.includes(product);
@@ -66,8 +64,8 @@ describe('M13 E Commerce Backend', () => {
     });
 
     // ***defined in starter code***
-    describe('PUT  /api/products/:id', () => {
-      it('updates a product', async () => {
+    describe('PUT  /api/products/:id', function () {
+      it('updates a product', async function () {
         const { data: postProduct } = await api.m13.products.post(newProduct());
         const update = {
           product_name: `SOLD OUT - ${postProduct.product_name}`,
@@ -87,8 +85,8 @@ describe('M13 E Commerce Backend', () => {
       });
     });
 
-    describe('DELETE /api/products/:id', () => {
-      it('removes a product', async () => {
+    describe('DELETE /api/products/:id', function () {
+      it('removes a product', async function () {
         const { data: postProduct } = await api.m13.products.post(newProduct());
         const { data: deleteResult } = await api.m13.products.delete(postProduct.id);
 
@@ -97,46 +95,80 @@ describe('M13 E Commerce Backend', () => {
       });
     });
   });
-});
 
-/**
- * Categories
- */
-describe('Category routes', () => {
-  // describe('GET /api/categories', () => {
-  //   it('gets all categories', () => {});
-  // });
-  // describe('GET /api/categories/:id', () => {
-  //   it('gets one category by id', () => {});
-  // });
-  // describe('POST  /api/categories', () => {
-  //   it('creates a category', () => {});
-  // });
-  // describe('PUT  /api/categories/:id', () => {
-  //   it('updates a category', () => {});
-  // });
-  // describe('DELETE /api/categories/:id', () => {
-  //   it('removes a category', () => {});
-  // });
-});
+  /**
+   * Categories
+   */
+  describe('Category routes', function () {
+    describe('GET /api/categories', function () {
+      it('gets all categories', async function () {
+        const { data } = await api.m13.categories.getAll();
+        expect(data, "get all categories didn't return an array").to.be.an('array');
+        if (data.length > 0) {
+          const [category] = data;
+          expect(category, 'model missing keys').to.include.all.keys('id', 'category_name');
+        }
+      });
 
-/**
- * Tags
- */
-describe('Tag routes', () => {
-  // describe('GET /api/tags', () => {
-  //   it('gets all tags', () => {});
-  // });
-  // describe('GET /api/tags/:id', () => {
-  //   it('gets one tag by id', () => {});
-  // });
-  // describe('POST  /api/tags', () => {
-  //   it('creates a tag', () => {});
-  // });
-  // describe('PUT  /api/tags/:id', () => {
-  //   it('updates a tag', () => {});
-  // });
-  // describe('DELETE /api/tags/:id', () => {
-  //   it('removes a tag', () => {});
-  // });
+      it('includes associated products', async function () {
+        const { data } = await api.m13.categories.getAll();
+        expect(data, "get all categories didn't return an array").to.be.an('array');
+        if (data.length > 0) {
+          const [category] = data;
+          expect(category, 'model missing associated products').to.include.all.keys('products');
+        }
+      });
+    });
+
+    describe('GET /api/categories/:id', function () {
+      it('gets one category by id', async function () {
+        const { data: postCategory } = await api.m13.categories.post(newCategory());
+        const { data: getCategory } = await api.m13.categories.getOne(postCategory.id);
+        expect(getCategory).to.be.an('object').that.includes(postCategory);
+      });
+
+      it('includes associated products', async function () {
+        const { data: postCategory } = await api.m13.categories.post(newCategory());
+        const { data: getCategory } = await api.m13.categories.getOne(postCategory.id);
+        expect(getCategory).to.include.all.keys('products');
+      });
+    });
+
+    describe('POST  /api/categories', function () {
+      it('creates a category', async function () {
+        const category = newCategory();
+        const { data } = await api.m13.categories.post(category);
+        expect(data).to.be.an('object').that.includes(category);
+      });
+    });
+
+    // describe('PUT  /api/categories/:id',  function () {
+    //   it('updates a category', async function () {});
+    // });
+
+    // describe('DELETE /api/categories/:id',  function () {
+    //   it('removes a category', async function () {});
+    // });
+  });
+
+  /**
+   * Tags
+   */
+  describe('Tag routes', function () {
+    // describe('GET /api/tags',  function () {
+    //   it('gets all tags',async  function () {});
+    // });
+    // describe('GET /api/tags/:id',  function () {
+    //   it('gets one tag by id',async  function () {});
+    // });
+    // describe('POST  /api/tags',  function () {
+    //   it('creates a tag',async  function () {});
+    // });
+    // describe('PUT  /api/tags/:id',  function () {
+    //   it('updates a tag',async  function () {});
+    // });
+    // describe('DELETE /api/tags/:id',  function () {
+    //   it('removes a tag',async  function () {});
+    // });
+  });
 });
