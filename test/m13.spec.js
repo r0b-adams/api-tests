@@ -17,7 +17,7 @@ describe('M13 E Commerce Backend', function () {
 
         if (data.length > 0) {
           const [product] = data;
-          expect(product, 'model missing keys').to.include.all.keys(
+          expect(product, 'missing key(s)').to.include.all.keys(
             'id',
             'product_name',
             'price',
@@ -32,10 +32,7 @@ describe('M13 E Commerce Backend', function () {
 
         if (data.length > 0) {
           const [product] = data;
-          expect(product, "get all products doesn't include tags").to.include.all.keys(
-            'category',
-            'tags',
-          );
+          expect(product, 'missing category or tag').to.include.all.keys('category', 'tags');
         }
       });
     });
@@ -50,7 +47,7 @@ describe('M13 E Commerce Backend', function () {
       it('includes category & tag data', async function () {
         const { data: postProduct } = await api.m13.products.post(newProduct());
         const { data: getProduct } = await api.m13.products.getOne(postProduct.id);
-        expect(getProduct).to.include.all.keys('category', 'tags');
+        expect(getProduct, 'missing category or tag').to.include.all.keys('category', 'tags');
       });
     });
 
@@ -106,7 +103,7 @@ describe('M13 E Commerce Backend', function () {
         expect(data, "get all categories didn't return an array").to.be.an('array');
         if (data.length > 0) {
           const [category] = data;
-          expect(category, 'model missing keys').to.include.all.keys('id', 'category_name');
+          expect(category, 'missing keys').to.include.all.keys('id', 'category_name');
         }
       });
 
@@ -115,7 +112,7 @@ describe('M13 E Commerce Backend', function () {
         expect(data, "get all categories didn't return an array").to.be.an('array');
         if (data.length > 0) {
           const [category] = data;
-          expect(category, 'model missing associated products').to.include.all.keys('products');
+          expect(category, 'missing products key').to.include.all.keys('products');
         }
       });
     });
@@ -130,7 +127,7 @@ describe('M13 E Commerce Backend', function () {
       it('includes associated products', async function () {
         const { data: postCategory } = await api.m13.categories.post(newCategory());
         const { data: getCategory } = await api.m13.categories.getOne(postCategory.id);
-        expect(getCategory).to.include.all.keys('products');
+        expect(getCategory, ' missing products key').to.include.all.keys('products');
       });
     });
 
@@ -176,20 +173,40 @@ describe('M13 E Commerce Backend', function () {
    * Tags
    */
   describe('Tag routes', function () {
-    // describe('GET /api/tags',  function () {
-    //   it('gets all tags',async  function () {});
+    describe('GET /api/tags', function () {
+      it('gets all tags', async function () {
+        const { data } = await api.m13.tags.getAll();
+        expect(data, "get all tags didn't return an array").to.be.an('array');
+        if (data.length > 0) {
+          const [tag] = data;
+          expect(tag, 'missing keys').to.include.all.keys('id', 'tag_name');
+        }
+      });
+
+      it('includes associated products', async function () {
+        const { data } = await api.m13.tags.getAll();
+        expect(data, "get all tags didn't return an array").to.be.an('array');
+        if (data.length > 0) {
+          const [tag] = data;
+          expect(tag, 'missing products key').to.include.all.keys('products');
+        }
+      });
+    });
+
+    // describe('GET /api/tags/:id', function () {
+    //   it('gets one tag by id', async function () {});
     // });
-    // describe('GET /api/tags/:id',  function () {
-    //   it('gets one tag by id',async  function () {});
+
+    // describe('POST  /api/tags', function () {
+    //   it('creates a tag', async function () {});
     // });
-    // describe('POST  /api/tags',  function () {
-    //   it('creates a tag',async  function () {});
+
+    // describe('PUT  /api/tags/:id', function () {
+    //   it('updates a tag', async function () {});
     // });
-    // describe('PUT  /api/tags/:id',  function () {
-    //   it('updates a tag',async  function () {});
-    // });
-    // describe('DELETE /api/tags/:id',  function () {
-    //   it('removes a tag',async  function () {});
+
+    // describe('DELETE /api/tags/:id', function () {
+    //   it('removes a tag', async function () {});
     // });
   });
 });
