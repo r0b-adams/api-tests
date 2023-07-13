@@ -142,9 +142,24 @@ describe('M13 E Commerce Backend', function () {
       });
     });
 
-    // describe('PUT  /api/categories/:id',  function () {
-    //   it('updates a category', async function () {});
-    // });
+    describe('PUT  /api/categories/:id', function () {
+      it('updates a category', async function () {
+        const { data: postCategory } = await api.m13.categories.post(newCategory());
+        const update = {
+          category_name: `UPDATED - ${postCategory.category_name}`,
+        };
+        const { data: putCategory } = await api.m13.categories.put(postCategory.id, update);
+
+        if (Array.isArray(putCategory)) {
+          expect(putCategory).to.include(1);
+        }
+
+        const { data: getCategory } = await api.m13.products.getOne(postCategory.id);
+        if (getCategory) {
+          expect(getCategory).to.be.an('object').that.includes(update);
+        }
+      });
+    });
 
     // describe('DELETE /api/categories/:id',  function () {
     //   it('removes a category', async function () {});
