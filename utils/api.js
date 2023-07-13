@@ -49,7 +49,7 @@ export const api = {
       getOne: (thoughtId) => axios.get(`/api/thoughts/${thoughtId}`),
       post: (thought) => axios.post('/api/thoughts', thought),
       put: (thoughtId, update) => axios.put(`/api/thoughts/${thoughtId}`, update),
-      delete: (id) => axios.delete(`/api/thoughts/${thoughtId}`),
+      delete: (thoughtId) => axios.delete(`/api/thoughts/${thoughtId}`),
       addreaction: (thoughtId, reaction) =>
         axios.post(`/api/thoughts/${thoughtId}/reactions`, reaction),
       removeReaction: (thoughtId, reactionId) =>
