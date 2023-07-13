@@ -125,6 +125,7 @@ describe('M18 Social Network API', function () {
     describe('GET /api/thoughts', function () {
       it('gets all thoughts', async function () {
         const { data } = await api.m18.thoughts.getAll();
+
         expect(data, "get all thoughts didn't return an array").to.be.an('array');
         if (data.length > 0) {
           const [thought] = data;
@@ -144,6 +145,7 @@ describe('M18 Social Network API', function () {
       it('gets one thought by id', async function () {
         const { data: user } = await api.m18.users.post(newUser());
         const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
+
         const { data: result } = await api.m18.thoughts.getOne(thought._id);
 
         expect(result).to.be.an('object');
@@ -161,10 +163,28 @@ describe('M18 Social Network API', function () {
       });
     });
 
-    // describe('POST /api/thoughts', function () {
-    //   it('creates a thought', async function () {});
-    //   it('adds created thought id to user thoughts array', async function () {});
-    // });
+    describe('POST /api/thoughts', function () {
+      it('creates a thought', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const body = newThought(user._id, user.username);
+
+        const { data: result } = await api.m18.thoughts.post(body);
+
+        expect(result).to.be.an('object');
+        expect(result.thoughtText).to.equal(body.thoughtText);
+        expect(result.username).to.equal(body.username);
+      });
+
+      it('adds created thought id to user thoughts array', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        await api.m18.thoughts.post(newThought(user._id, user.username));
+
+        const { data: result } = await api.m18.users.getOne(user._id);
+
+        // array of strings or thought documents, so just test that something was added
+        expect(result.thoughts.length).to.equal(1);
+      });
+    });
 
     // describe('PUT /api/thoughts/:thoughtId', function () {
     //   it('updates a thought', async function () {});
