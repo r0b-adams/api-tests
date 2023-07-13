@@ -69,6 +69,12 @@ export const newThought = (userId, username) => {
   };
 };
 
+export const thoughtUpdate = () => {
+  return {
+    thoughtText: lorem.generateParagraphs(1),
+  };
+};
+
 export const newReaction = () => {
   return {
     reactionBody: lorem.generateSentences(1),
