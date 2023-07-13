@@ -154,16 +154,22 @@ describe('M13 E Commerce Backend', function () {
           expect(putCategory).to.include(1);
         }
 
-        const { data: getCategory } = await api.m13.products.getOne(postCategory.id);
+        const { data: getCategory } = await api.m13.categories.getOne(postCategory.id);
         if (getCategory) {
           expect(getCategory).to.be.an('object').that.includes(update);
         }
       });
     });
 
-    // describe('DELETE /api/categories/:id',  function () {
-    //   it('removes a category', async function () {});
-    // });
+    describe('DELETE /api/categories/:id', function () {
+      it('removes a category', async function () {
+        const { data: postCategory } = await api.m13.categories.post(newCategory());
+        const { data: deleteResult } = await api.m13.categories.delete(postCategory.id);
+
+        // sequelize destroy query returns number of deleted rows
+        expect(deleteResult).to.equal(1);
+      });
+    });
   });
 
   /**
