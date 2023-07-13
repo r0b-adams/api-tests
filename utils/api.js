@@ -36,22 +36,24 @@ export const api = {
    */
   m18: {
     users: {
-      getAll: () => {},
-      getOne: (id) => {},
-      post: (payload) => {},
-      put: (id) => {},
-      delete: (id) => {},
-      addFriend: (userId, friendId) => {},
-      removeFriend: (userId, friendId) => {},
+      getAll: () => axios.get('/api/users'),
+      getOne: (userId) => axios.get(`/api/users/${userId}`),
+      post: (user) => axios.post('/api/users', user),
+      put: (userId, update) => axios.put(`/api/users/${userId}`, update),
+      delete: (userId) => axios.delete(`/api/users/${userId}`),
+      addFriend: (userId, friendId) => axios.post(`/api/users/${userId}/friends/${friendId}`),
+      removeFriend: (userId, friendId) => axios.delete(`/api/users/${userId}/friends/${friendId}`),
     },
     thoughts: {
-      getAll: () => {},
-      getOne: (id) => {},
-      post: (payload) => {},
-      put: (id) => {},
-      delete: (id) => {},
-      addreaction: () => {},
-      removeReaction: (reactionId) => {},
+      getAll: () => axios.get(`/api/thoughts`),
+      getOne: (thoughtId) => axios.get(`/api/thoughts/${thoughtId}`),
+      post: (thought) => axios.post('/api/thoughts', thought),
+      put: (thoughtId, update) => axios.put(`/api/thoughts/${thoughtId}`, update),
+      delete: (id) => axios.delete(`/api/thoughts/${thoughtId}`),
+      addreaction: (thoughtId, reaction) =>
+        axios.post(`/api/thoughts/${thoughtId}/reactions`, reaction),
+      removeReaction: (thoughtId, reactionId) =>
+        axios.delete(`/api/thoughts/${thoughtId}/reactions/${reactionId}`),
     },
   },
 };
