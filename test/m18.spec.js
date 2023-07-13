@@ -5,118 +5,118 @@ import { api } from '../utils/api.js';
 import { newUser, newThought, thoughtUpdate, newReaction } from '../utils/helpers.js';
 
 describe('M18 Social Network API', function () {
-  // describe('User routes', function () {
-  //   /**
-  //    * Users
-  //    */
-  //   describe('GET /api/users', function () {
-  //     it('gets all users', async function () {
-  //       const { data } = await api.m18.users.getAll();
-  //       expect(data, "get all users didn't return an array").to.be.an('array');
+  describe('User routes', function () {
+    /**
+     * Users
+     */
+    describe('GET /api/users', function () {
+      it('gets all users', async function () {
+        const { data } = await api.m18.users.getAll();
+        expect(data, "get all users didn't return an array").to.be.an('array');
 
-  //       if (data.length > 0) {
-  //         const [user] = data;
-  //         expect(user, 'missing key(s)').to.include.all.keys(
-  //           '_id',
-  //           'username',
-  //           'email',
-  //           'thoughts',
-  //           'friends',
-  //           'friendCount',
-  //         );
-  //       }
-  //     });
-  //   });
+        if (data.length > 0) {
+          const [user] = data;
+          expect(user, 'missing key(s)').to.include.all.keys(
+            '_id',
+            'username',
+            'email',
+            'thoughts',
+            'friends',
+            'friendCount',
+          );
+        }
+      });
+    });
 
-  //   describe('GET /api/users/:userId', function () {
-  //     it('gets one user by id', async function () {
-  //       const { data: user } = await api.m18.users.post(newUser());
-  //       const { data: result } = await api.m18.users.getOne(user._id);
+    describe('GET /api/users/:userId', function () {
+      it('gets one user by id', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: result } = await api.m18.users.getOne(user._id);
 
-  //       expect(result).to.be.an('object');
-  //       expect(result.username).to.equal(user.username);
-  //       expect(result.email).to.equal(user.email);
-  //     });
-  //   });
+        expect(result).to.be.an('object');
+        expect(result.username).to.equal(user.username);
+        expect(result.email).to.equal(user.email);
+      });
+    });
 
-  //   describe('POST /api/users', function () {
-  //     it('creates a user', async function () {
-  //       const user = newUser();
-  //       const { data: result } = await api.m18.users.post(user);
+    describe('POST /api/users', function () {
+      it('creates a user', async function () {
+        const user = newUser();
+        const { data: result } = await api.m18.users.post(user);
 
-  //       expect(result, 'missing key(s)').to.include.all.keys(
-  //         '_id',
-  //         'username',
-  //         'email',
-  //         'thoughts',
-  //         'friends',
-  //         'friendCount',
-  //       );
-  //       expect(result.username).to.equal(user.username);
-  //       expect(result.email).to.equal(user.email);
-  //     });
-  //   });
+        expect(result, 'missing key(s)').to.include.all.keys(
+          '_id',
+          'username',
+          'email',
+          'thoughts',
+          'friends',
+          'friendCount',
+        );
+        expect(result.username).to.equal(user.username);
+        expect(result.email).to.equal(user.email);
+      });
+    });
 
-  //   describe('PUT /api/users/:userId', function () {
-  //     it('updates a user by id', async function () {
-  //       const { data: user } = await api.m18.users.post(newUser());
-  //       const update = newUser();
-  //       const { data: result } = await api.m18.users.put(user._id, update);
+    describe('PUT /api/users/:userId', function () {
+      it('updates a user by id', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const update = newUser();
+        const { data: result } = await api.m18.users.put(user._id, update);
 
-  //       expect(result).to.be.an('object');
-  //       expect(result.username).to.equal(update.username);
-  //       expect(result.email).to.equal(update.email);
-  //     });
-  //   });
+        expect(result).to.be.an('object');
+        expect(result.username).to.equal(update.username);
+        expect(result.email).to.equal(update.email);
+      });
+    });
 
-  //   describe('DELETE /api/users/:userId', function () {
-  //     it('deletes a user by id', async function () {
-  //       const { data: before } = await api.m18.users.getAll();
-  //       const { data: user } = await api.m18.users.post(newUser());
-  //       const { data: after } = await api.m18.users.getAll();
+    describe('DELETE /api/users/:userId', function () {
+      it('deletes a user by id', async function () {
+        const { data: before } = await api.m18.users.getAll();
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: after } = await api.m18.users.getAll();
 
-  //       // check user was created
-  //       expect(after.length - before.length).to.equal(1);
+        // check user was created
+        expect(after.length - before.length).to.equal(1);
 
-  //       // delete the user
-  //       await api.m18.users.delete(user._id);
-  //       const { data: result } = await api.m18.users.getAll();
+        // delete the user
+        await api.m18.users.delete(user._id);
+        const { data: result } = await api.m18.users.getAll();
 
-  //       // check user was removed
-  //       expect(result.length).to.equal(before.length);
-  //     });
-  //   });
+        // check user was removed
+        expect(result.length).to.equal(before.length);
+      });
+    });
 
-  //   describe('POST /api/users/:userId/friends/:friendId - ', function () {
-  //     it('adds a friend', async function () {
-  //       const { data: user } = await api.m18.users.post(newUser());
-  //       const { data: friend } = await api.m18.users.post(newUser());
-  //       await api.m18.users.addFriend(user._id, friend._id);
-  //       const { data: result } = await api.m18.users.getOne(user._id);
+    describe('POST /api/users/:userId/friends/:friendId - ', function () {
+      it('adds a friend', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: friend } = await api.m18.users.post(newUser());
+        await api.m18.users.addFriend(user._id, friend._id);
+        const { data: result } = await api.m18.users.getOne(user._id);
 
-  //       expect(result.friends.length).to.equal(1);
-  //       expect(result.friendCount).to.equal(1);
-  //     });
-  //   });
+        expect(result.friends.length).to.equal(1);
+        expect(result.friendCount).to.equal(1);
+      });
+    });
 
-  //   describe('DELETE /api/users/:userId/friends/:friendId', function () {
-  //     it('removes a friend', async function () {
-  //       const { data: user } = await api.m18.users.post(newUser());
-  //       const { data: friend } = await api.m18.users.post(newUser());
-  //       await api.m18.users.addFriend(user._id, friend._id);
-  //       const { data: added } = await api.m18.users.getOne(user._id);
+    describe('DELETE /api/users/:userId/friends/:friendId', function () {
+      it('removes a friend', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: friend } = await api.m18.users.post(newUser());
+        await api.m18.users.addFriend(user._id, friend._id);
+        const { data: added } = await api.m18.users.getOne(user._id);
 
-  //       expect(added.friends.length).to.equal(1);
-  //       expect(added.friendCount).to.equal(1);
+        expect(added.friends.length).to.equal(1);
+        expect(added.friendCount).to.equal(1);
 
-  //       await api.m18.users.removeFriend(user._id, friend._id);
-  //       const { data: result } = await api.m18.users.getOne(user._id);
+        await api.m18.users.removeFriend(user._id, friend._id);
+        const { data: result } = await api.m18.users.getOne(user._id);
 
-  //       expect(result.friends.length).to.equal(0);
-  //       expect(result.friendCount).to.equal(0);
-  //     });
-  //   });
-  // });
+        expect(result.friends.length).to.equal(0);
+        expect(result.friendCount).to.equal(0);
+      });
+    });
+  });
 
   /**
    * Thoughts
