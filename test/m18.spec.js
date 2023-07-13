@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import { api } from '../utils/api.js';
-import { newUser } from '../utils/helpers.js';
+import { newUser, newThought } from '../utils/helpers.js';
 
 describe('M18 Social Network API', function () {
   // describe('User routes', function () {
@@ -126,7 +126,6 @@ describe('M18 Social Network API', function () {
       it('gets all thoughts', async function () {
         const { data } = await api.m18.thoughts.getAll();
         expect(data, "get all thoughts didn't return an array").to.be.an('array');
-
         if (data.length > 0) {
           const [thought] = data;
           expect(thought, 'missing key(s)').to.include.all.keys(
@@ -141,9 +140,26 @@ describe('M18 Social Network API', function () {
       });
     });
 
-    // describe('GET /api/thoughts/:thoughtId', function () {
-    //   it('gets one thought', async function () {});
-    // });
+    describe('GET /api/thoughts/:thoughtId', function () {
+      it('gets one thought by id', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
+        const { data: result } = await api.m18.thoughts.getOne(thought._id);
+
+        expect(result).to.be.an('object');
+        expect(thought, 'missing key(s)').to.include.all.keys(
+          '_id',
+          'username',
+          'thoughtText',
+          'createdAt',
+          'reactions',
+          'reactionCount',
+        );
+        expect(result.thoughtText).to.equal(thought.thoughtText);
+        expect(result.username).to.equal(thought.username);
+        expect(result.createdAt).to.equal(thought.createdAt);
+      });
+    });
 
     // describe('POST /api/thoughts', function () {
     //   it('creates a thought', async function () {});
