@@ -281,7 +281,7 @@ describe('M18 Social Network API', function () {
     it("removes a deleted user's associated thoughts", async function () {
       const { data: before } = await api.m18.thoughts.getAll();
       const { data: user } = await api.m18.users.post(newUser());
-      const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
+      await api.m18.thoughts.post(newThought(user._id, user.username));
       const { data: after } = await api.m18.thoughts.getAll();
 
       // check thought was created
