@@ -69,9 +69,23 @@ describe('M18 Social Network API', function () {
       });
     });
 
-    // describe('DELETE /api/users/:userId', function () {
-    //   it('deletes a user by id', function () {});
-    // });
+    describe('DELETE /api/users/:userId', function () {
+      it('deletes a user by id', async function () {
+        const { data: before } = await api.m18.users.getAll();
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: after } = await api.m18.users.getAll();
+
+        // check user was created
+        expect(after.length - before.length).to.equal(1);
+
+        // delete the user
+        await api.m18.users.delete(user._id);
+        const { data: result } = await api.m18.users.getAll();
+
+        // check user was removed
+        expect(result.length).to.equal(before.length);
+      });
+    });
 
     // describe('POST /api/users/:userId/friends/:friendId - ', function () {
     //   it('adds a friend', function () {});
