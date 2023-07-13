@@ -216,7 +216,21 @@ describe('M18 Social Network API', function () {
         expect(result.length).to.equal(before.length);
       });
 
-      // it('removes deleted thought from user thoughts array', async function () {});
+      it('removes deleted thought from user thoughts array', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
+        const { data: test } = await api.m18.users.getOne(user._id);
+
+        // check thought was added
+        expect(test.thoughts.length).to.equal(1);
+
+        // delete the thought
+        await api.m18.thoughts.delete(thought._id);
+        const { data: result } = await api.m18.users.getOne(user._id);
+
+        // check thought was removed
+        expect(result.thoughts.length).to.equal(0);
+      });
     });
 
     // describe('POST /api/thoughts/:thoughtId/reactions', async function () {
