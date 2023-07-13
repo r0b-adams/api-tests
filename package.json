@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint",
-    "test": "mocha test/m18.spec.js"
+    "test:m13": "mocha test/m13.spec.js",
+    "test:m18": "mocha test/m18.spec.js"
   },
   "dependencies": {
     "axios": "^1.4.0",
