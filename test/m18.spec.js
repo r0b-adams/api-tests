@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import { api } from '../utils/api.js';
-import { newUser, newThought } from '../utils/helpers.js';
+import { newUser, newThought, thoughtUpdate } from '../utils/helpers.js';
 
 describe('M18 Social Network API', function () {
   // describe('User routes', function () {
@@ -186,9 +186,17 @@ describe('M18 Social Network API', function () {
       });
     });
 
-    // describe('PUT /api/thoughts/:thoughtId', function () {
-    //   it('updates a thought', async function () {});
-    // });
+    describe('PUT /api/thoughts/:thoughtId', function () {
+      it('updates a thought', async function () {
+        const { data: user } = await api.m18.users.post(newUser());
+        const { data: thought } = await api.m18.thoughts.post(newThought(user._id, user.username));
+        const update = thoughtUpdate();
+        const { data: result } = await api.m18.thoughts.put(thought._id, update);
+
+        expect(result).to.be.an('object');
+        expect(result.thoughtText).to.equal(update.thoughtText);
+      });
+    });
 
     // describe('DELETE /api/thoughts/:thoughtId', function () {
     //   it('deletes a thought', async function () {});
