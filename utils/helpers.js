@@ -19,3 +19,17 @@ export const newProduct = () => {
     stock: Math.floor(Math.random() * 101),
   };
 };
+
+export const newCategory = () => {
+  return {
+    id: id(),
+    category_name: uuidv4(),
+  };
+};
+
+export const newTag = () => {
+  return {
+    id: id(),
+    tag_name: uuidv4(),
+  };
+};
