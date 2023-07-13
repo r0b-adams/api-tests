@@ -8,11 +8,12 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint",
-    "test": "mocha"
+    "test": "mocha test/m18.spec.js"
   },
   "dependencies": {
     "axios": "^1.4.0",
     "chai": "*",
+    "lorem-ipsum": "^2.0.8",
     "mocha": "*",
     "uuid": "^9.0.0"
   },
